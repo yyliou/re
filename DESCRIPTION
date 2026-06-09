@@ -1,0 +1,21 @@
+Package: plvr
+Title: Download Taiwan MOI Real Estate Transaction Open Data
+Version: 0.1.0
+Authors@R:
+    person("Liou", "Yuyou", email = "yuyou.liou@gmail.com", role = c("aut", "cre"))
+Description: Download Taiwan Ministry of the Interior (MOI) real-estate
+    actual-price registration open data (sale, presale, rent) for a given
+    date range. The source publishes data per calendar quarter
+    (https://plvr.land.moi.gov.tw/DownloadOpenData); this package maps a
+    yyyy-mm-dd range to the quarters it overlaps, downloads each quarter's
+    zip, extracts only the requested datasets/counties, writes one Parquet
+    file per quarter per dataset, and deletes the raw zips to keep disk use
+    low.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports:
+    arrow,
+    readr
+Suggests:
+    testthat
+RoxygenNote: 7.3.1

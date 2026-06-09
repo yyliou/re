@@ -1,0 +1,8 @@
+^trans$
+^rent$
+^presale$
+^\.git$
+^\.gitattributes$
+^README\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
