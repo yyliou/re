@@ -1,9 +1,6 @@
-<img src="man/figures/logo.svg" align="right" height="139" alt="plvr hex logo" />
+# plvr: Retrieval of Taiwan Real Estate Transaction Open Data 
 
-# plvr: Retrieval of Taiwan Real Estate Transaction Open Data
-
-## Overview
-
+## Overview <img src="man/figures/logo.svg" align="right" height="139" alt="plvr hex logo"  />
 `plvr` is an R package for the programmatic acquisition of the actual
 real-estate transaction records (實價登錄) published as open data by Taiwan's
 Ministry of the Interior (MOI). It covers the three transaction categories
@@ -82,7 +79,7 @@ install.packages(c("arrow", "readr"))
 
 # Install plvr from the repository root:
 # install.packages("remotes")
-# remotes::install_local(".")
+remotes::install_github("yyliou/re")
 ```
 
 Alternatively, the source files may be loaded directly without installation:
