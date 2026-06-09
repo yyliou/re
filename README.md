@@ -79,7 +79,7 @@ install.packages(c("arrow", "readr"))
 
 # Install plvr from the repository root:
 # install.packages("remotes")
-# remotes::install_local(".")
+remotes::install_github("yyliou/re")
 ```
 
 Alternatively, the source files may be loaded directly without installation:
