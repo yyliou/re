@@ -177,7 +177,3 @@ accordingly. Quarters that have not yet been published are skipped
 automatically. Network access to the ministry's servers is required and may be
 unavailable from sandboxed environments; retrieval should be performed in an
 environment with direct internet access.
-
-## License
-
-MIT. Source data © Ministry of the Interior, Republic of China (Taiwan).
