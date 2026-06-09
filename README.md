@@ -1,6 +1,4 @@
-<img src="man/figures/logo.svg" align="right" height="139" alt="plvr hex logo" />
-
-# plvr: Retrieval of Taiwan Real Estate Transaction Open Data
+# plvr: Retrieval of Taiwan Real Estate Transaction Open Data <img src="man/figures/logo.svg" align="right" height="139" alt="plvr hex logo" />
 
 ## Overview
 
