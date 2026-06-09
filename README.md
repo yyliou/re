@@ -82,12 +82,6 @@ install.packages(c("arrow", "readr"))
 remotes::install_github("yyliou/re")
 ```
 
-Alternatively, the source files may be loaded directly without installation:
-
-```r
-for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
-```
-
 ## Usage
 
 ```r
