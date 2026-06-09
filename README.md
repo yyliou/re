@@ -125,6 +125,46 @@ The recognised flags are `--start` and `--end` (both required), together with
 the optional `--dir`, `--types` (`sale,presale,rent`), `--counties` (e.g.
 `a,f`), `--overwrite`, and `--quiet`.
 
+## Reading the downloaded data
+
+The output Parquet files are read with the `arrow` package. A single quarterly
+file is loaded directly into a tibble:
+
+```r
+library(arrow)
+df <- read_parquet("trans/113S1.parquet")
+```
+
+When several quarters are to be analysed together, `open_dataset()` treats an
+entire output directory as one logical table and defers reading until the data
+are actually required, which conserves memory:
+
+```r
+library(arrow)
+library(dplyr)
+
+ds <- open_dataset("trans")        # scans every .parquet in the directory
+ds |>
+  filter(county == "臺北市") |>    # predicates are pushed down before reading
+  collect()                        # materialise the result as a tibble
+```
+
+Because retrieval operates at quarterly granularity, day-level selection is
+performed after acquisition by filtering on the transaction-date field, which is
+stored as a Republic of China date string (e.g. `1130115`):
+
+```r
+ds |>
+  filter(交易年月日 >= "1130101", 交易年月日 <= "1130331") |>
+  collect()
+```
+
+Column names follow the original source headers and may be inspected with
+`names(read_parquet("trans/113S1.parquet"))`; recall that each record also
+carries the added `county_code`, `county`, and `season` fields. For larger
+analyses requiring SQL, the dataset may be passed to DuckDB via
+`arrow::to_duckdb()`.
+
 ## Administrative region codes
 
 | Code | Region | Code | Region | Code | Region |
