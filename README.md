@@ -1,4 +1,4 @@
-# plvr: Retrieval of Taiwan Real Estate Transaction Open Data <img src="man/figures/logo.svg" align="right" height="139" alt="plvr hex logo  />
+# plvr: Retrieval of Taiwan Real Estate Transaction Open Data <img src="man/figures/logo.svg" align="right" height="139" alt="plvr hex logo"  />
 
 `plvr` is an R package for the programmatic acquisition of the actual
 real-estate transaction records (實價登錄) published as open data by Taiwan's
