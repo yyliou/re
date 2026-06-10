@@ -15,7 +15,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:
     arrow,
-    readr
+    readr,
+    stats
 Suggests:
     testthat
 RoxygenNote: 7.3.1

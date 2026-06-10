@@ -162,6 +162,64 @@ carries the added `county_code`, `county`, and `season` fields. For larger
 analyses requiring SQL, the dataset may be passed to DuckDB via
 `arrow::to_duckdb()`.
 
+## Cleaning and feature engineering
+
+The retrieved Parquet files preserve the source columns verbatim, with every
+field stored as text. The `plvr_clean()` function transforms a raw data frame
+into an analysis-ready table through a composable `data.frame -> data.frame`
+pipeline. Each stage is governed by an argument and may be enabled or disabled
+independently; the stages execute in the following order.
+
+1. **Feature engineering** (`add_features`). The raw Traditional Chinese columns
+   are parsed into typed, English-named features: transaction and construction
+   dates; total and unit prices; land, building, main-building, ancillary,
+   balcony, and parking areas; layout counts (`rooms`, `halls`, `baths`);
+   building age in years; transfer level and total storeys (Chinese numerals are
+   converted, with basements rendered negative); the `elevator`, `has_balcony`,
+   `has_parking`, `has_mgmt`, and `partitioned` indicators; land-use `zoning`;
+   and the `target_class` classification of the transaction object into
+   房地 / 房 / 地 / 車位. Source columns absent from a given category yield `NA`
+   columns, so the same call applies to sales, pre-sale units, and rentals.
+2. **Removal of unreasonable values** (`drop_invalid`). Records with a
+   non-positive or missing price, an unparseable transaction date (for instance
+   a thirteenth month), or a zero building or land area inconsistent with the
+   transaction object are discarded.
+3. **Removal of non-arm's-length transactions** (`drop_abnormal`). Related-party,
+   corporate, foreclosure (法拍), and "death house" (凶宅) dealings are
+   identified by matching the remark field (`備註`) against the keyword groups
+   returned by `plvr_abnormal_keywords()`, which may be overridden or extended.
+   The function `plvr_flag_abnormal()` exposes the per-record reason without
+   deleting rows.
+4. **Restriction by transaction object** (`target`). Retains only the requested
+   classes among 房地, 房, 地, and 車位.
+5. **Trimming of extreme values** (`trim_extreme`). The highest and lowest
+   `trim_prob` (one percent by default) of unit price (單價) are removed within
+   each season, so that the threshold adapts to seasonal price levels.
+
+```r
+library(plvr)
+library(arrow)
+
+df <- read_parquet("trans/113S1.parquet")
+
+# Full cleaning: drop unreasonable and non-arm's-length records, keep only
+# 房地 and 房, and trim the per-season 1% unit-price tails.
+clean <- plvr_clean(
+  df, type = "sale",
+  target = c("房地", "房"),
+  trim_extreme = TRUE
+)
+
+# Feature engineering only, leaving every record in place:
+feat <- plvr_add_features(df, type = "sale")
+```
+
+Each stage reports the number of records removed unless `quiet = TRUE`. The
+toggles default to a conventional academic configuration — feature engineering,
+unreasonable-value removal, and non-arm's-length removal enabled; extreme-value
+trimming and target restriction left to the caller — and any of them may be
+adjusted through the corresponding argument.
+
 ## Administrative region codes
 
 | Code | Region | Code | Region | Code | Region |
